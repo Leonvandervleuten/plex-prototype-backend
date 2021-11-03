@@ -3,6 +3,7 @@ package com.plex.restservice;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.plex.restservice.challenge.Category;
 import com.plex.restservice.challenge.Challenge;
 import com.plex.restservice.challenge.User;
 import org.springframework.stereotype.Service;
@@ -67,8 +68,10 @@ public class MainService {
         return challenges;
     }
 
+    //Used for DeX API call /project/id <-- get single project | Json Data is different from /project
     private Challenge createChallengeFromJson(String json) throws JsonProcessingException {
         JsonNode challengeNode = new ObjectMapper().readTree(json);
+        
         //basic values
         Long id = challengeNode.get("id").asLong();
         Long userId = challengeNode.get("userId").asLong();
@@ -81,11 +84,23 @@ public class MainService {
         //create object without nested
         Challenge challenge = new Challenge(id, userId, name, description, shortDescription, uri, institutePrivate);
 
-        //add nested
+        //add nested user
         challenge.setUser(new User(challengeNode.get("user").get("id").asLong(), challengeNode.get("user").get("name").textValue(), challengeNode.get("user").get("email").textValue()));
-        //TODO Add: collaborators array, linkedInsitutions array, Dates, Project icon object, call to action array, likes array, imamge array, categories array?
+
+        //add array of categories
+        JsonNode categoriesNode = challengeNode.get("categories");
+        if(categoriesNode.isArray()){
+            List<Category> categoriesArray = new ArrayList<>();
+            for (JsonNode category : categoriesNode){
+                categoriesArray.add(new Category(category.get("id").asLong(), category.get("name").textValue()));
+            }
+            challenge.setCategories(categoriesArray);
+        }
+        //TODO Add: collaborators array, linkedInsitutions array, Dates, Project icon object, call to action array, likes array, imamge array
         return challenge;
     }
+
+    //Used for DeX API call /project <-- gets all projects | Json Data is different from /project/id
     private List<Challenge> createChallengeFromJsonArray(String json) throws JsonProcessingException {
         List<Challenge> challenges= new ArrayList<>();
         JsonNode rootArray = new ObjectMapper().readTree(json).get("results");
@@ -99,9 +114,20 @@ public class MainService {
             //create object without nested
             Challenge challenge = new Challenge(id, name, shortDescription);
 
-            //add nested
+            //add nested user
             challenge.setUser(new User(root.get("user").get("id").asLong(), root.get("user").get("name").textValue(), root.get("user").get("email").textValue()));
-            //TODO Add: collaborators array, linkedInsitutions array, Dates, Project icon object, call to action array, likes array, imamge array, categories array.
+
+            //add array of categories
+            JsonNode categoriesNode = root.get("categories");
+            if(categoriesNode.isArray()){
+                List<Category> categoriesArray = new ArrayList<>();
+                for (JsonNode category : categoriesNode){
+                    categoriesArray.add(new Category(category.get("id").asLong(), category.get("name").textValue()));
+                }
+                challenge.setCategories(categoriesArray);
+            }
+
+            //TODO Add: collaborators array, linkedInsitutions array, Dates, Project icon object, call to action array, likes array, imamge array.
             challenges.add(challenge);
         }
         return challenges;

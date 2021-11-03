@@ -39,8 +39,11 @@ public class Challenge {
         this.name = name;
         this.shortDescription = shortDescription;
     }
-
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 }
