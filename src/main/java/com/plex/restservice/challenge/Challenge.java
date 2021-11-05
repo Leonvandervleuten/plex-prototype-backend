@@ -1,4 +1,5 @@
 package com.plex.restservice.challenge;
+
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class Challenge {
     public List<Like> likes;
     public List<Image> images;
     public boolean institutePrivate;
-    public List<Category> categories; //TODO add
+    public List<Category> categories;
 
 
     //Used for /project/{id} request
