@@ -1,19 +1,12 @@
 package com.plex.restservice;
 
 import com.plex.restservice.challenge.Challenge;
-import io.restassured.response.Response;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import springfox.documentation.spring.web.json.Json;
-
-import javax.json.JsonObject;
-import java.util.ArrayList;
 import java.util.List;
-
-import static io.restassured.RestAssured.get;
 
 @SpringBootTest
 class RestServiceApplicationTests {
@@ -33,12 +26,12 @@ class RestServiceApplicationTests {
     projectArray.put(project2);
 
     JSONObject mainObj = new JSONObject();
-    mainObj.put("Projectnaam", projectArray);
+    mainObj.put("NaamVanLijst", projectArray);
 
-    List<Challenge> projects = mainService.getChallenges();
+    System.out.println(mainObj);
 
     //Act
-    mainService.createProjectList();
+//    mainService.createProjectList(mainObj);
 
 
 

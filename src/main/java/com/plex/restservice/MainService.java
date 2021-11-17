@@ -6,15 +6,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.plex.restservice.challenge.Category;
 import com.plex.restservice.challenge.Challenge;
 import com.plex.restservice.challenge.User;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
-import javax.json.JsonObject;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -141,7 +144,14 @@ public class MainService {
     return challenges;
   }
 
-  public void createProjectList(){
+  public void createProjectList(JSONObject inputJsonObject) throws JSONException {
+
+    Iterator<?> keys = inputJsonObject.keys();
+      String key = (String)keys.next();
+    System.out.println(key);
+
+//    JSONArray array = inputJsonObject.getJSONArray("Projectnaam");
+//    System.out.println(array.toString());
 
   }
 
