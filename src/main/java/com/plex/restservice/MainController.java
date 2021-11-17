@@ -23,6 +23,7 @@ public class MainController {
         return mainService.getChallenges();
     }
 
+
     @CrossOrigin
     @GetMapping("/challenges/{id}")
     public Challenge getChallengesById(@PathVariable("id") String id){

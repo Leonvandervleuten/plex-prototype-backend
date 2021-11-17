@@ -47,4 +47,27 @@ public class Challenge {
     public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
+
+    @Override
+    public String toString() {
+        return "Challenge{" +
+            "id=" + id +
+            ", user=" + user +
+            ", userId=" + userId +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", shortDescription='" + shortDescription + '\'' +
+            ", uri='" + uri + '\'' +
+            ", collaborators=" + collaborators +
+            ", linkedInstitutions=" + linkedInstitutions +
+            ", created=" + created +
+            ", updated=" + updated +
+            ", projectIcon=" + projectIcon +
+            ", callToActions=" + callToActions +
+            ", likes=" + likes +
+            ", images=" + images +
+            ", institutePrivate=" + institutePrivate +
+            ", categories=" + categories +
+            '}';
+    }
 }
