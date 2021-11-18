@@ -6,19 +6,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.plex.restservice.challenge.Category;
 import com.plex.restservice.challenge.Challenge;
 import com.plex.restservice.challenge.User;
+import com.sun.xml.bind.v2.TODO;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.stream.IntStream;
 
 @Service
 public class MainService {
@@ -146,14 +151,31 @@ public class MainService {
 
   public void createProjectList(JSONObject inputJsonObject) throws JSONException {
 
-    Iterator<?> keys = inputJsonObject.keys();
-      String key = (String)keys.next();
-    System.out.println(key);
+    String listName = (String) inputJsonObject.get("Name");
 
-//    JSONArray array = inputJsonObject.getJSONArray("Projectnaam");
-//    System.out.println(array.toString());
+    JSONArray projectIds = inputJsonObject.getJSONArray("ProjectIds");
 
+    List idList = new ArrayList();
+    for (int i = 0; i < projectIds.length(); i++) {
+      JSONObject jsn = projectIds.getJSONObject(i);
+      idList.add(jsn.getInt("ID"));
+    }
+
+    List<Challenge> apiLijst = getChallenges();
+    List<Challenge> returnLijstje = new ArrayList<>();
+
+    for (int i = 0; i < apiLijst.size(); i++) {
+      for (int y = 0; y < idList.size(); y++) {
+        Challenge array = apiLijst.get(i);
+        int id = (int) idList.get(i);
+        if (returnLijstje.contains(array)) {
+        }
+        else {
+          returnLijstje.add(array);
+        }
+      }
+      //TODO break toevoegen voor index out of bounds
+
+    }
   }
-
-
 }

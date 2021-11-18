@@ -17,21 +17,22 @@ class RestServiceApplicationTests {
   void testCreateProjectlistForDeelnemer() throws JSONException {
     //Arrange
     JSONObject project1 = new JSONObject();
-    project1.put("ID", 1);
+    project1.put("ID", 158);
     JSONObject project2 = new JSONObject();
-    project2.put("ID", 2);
+    project2.put("ID", 156);
 
     JSONArray projectArray = new JSONArray();
     projectArray.put(project1);
     projectArray.put(project2);
 
     JSONObject mainObj = new JSONObject();
-    mainObj.put("NaamVanLijst", projectArray);
+    mainObj.put("ProjectIds", projectArray);
+    mainObj.put("Name", "NaamVanLijst");
 
     System.out.println(mainObj);
 
     //Act
-//    mainService.createProjectList(mainObj);
+    mainService.createProjectList(mainObj);
 
 
 
