@@ -4,8 +4,10 @@ import com.plex.restservice.challenge.Challenge;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import java.util.List;
 
 @SpringBootTest
@@ -27,15 +29,14 @@ class RestServiceApplicationTests {
 
     JSONObject mainObj = new JSONObject();
     mainObj.put("ProjectIds", projectArray);
-    mainObj.put("Name", "NaamVanLijst");
+    mainObj.put("ListName", "NaamVanLijst");
 
     //Act
-    mainService.createProjectList(mainObj);
-
-
-
+    JSONObject returnedProjectList = mainService.createProjectList(mainObj);
 
     //Assert
+    Assertions.assertEquals(mainObj.get("ListName"), returnedProjectList.get("ListName"));
+    Assertions.assertEquals(mainObj.length(), returnedProjectList.length());
 
   }
 
