@@ -29,8 +29,6 @@ class RestServiceApplicationTests {
     mainObj.put("ProjectIds", projectArray);
     mainObj.put("Name", "NaamVanLijst");
 
-    System.out.println(mainObj);
-
     //Act
     mainService.createProjectList(mainObj);
 

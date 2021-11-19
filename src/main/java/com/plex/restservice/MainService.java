@@ -151,8 +151,6 @@ public class MainService {
 
   public void createProjectList(JSONObject inputJsonObject) throws JSONException {
 
-    String listName = (String) inputJsonObject.get("Name");
-
     JSONArray projectIds = inputJsonObject.getJSONArray("ProjectIds");
 
     List idList = new ArrayList();
@@ -165,17 +163,35 @@ public class MainService {
     List<Challenge> returnLijstje = new ArrayList<>();
 
     for (int i = 0; i < apiLijst.size(); i++) {
+      if (idList.size() <= i) {
+        break;
+      } else {
       for (int y = 0; y < idList.size(); y++) {
-        Challenge array = apiLijst.get(i);
-        int id = (int) idList.get(i);
-        if (returnLijstje.contains(array)) {
-        }
-        else {
-          returnLijstje.add(array);
+          Challenge array = apiLijst.get(i);
+          int id = (int) idList.get(i);
+          if (returnLijstje.contains(array)) {
+          }
+          else {
+            returnLijstje.add(array);
+          }
         }
       }
-      //TODO break toevoegen voor index out of bounds
-
     }
+
+    String name = (String) inputJsonObject.get("Name");
+    JSONObject listname = new JSONObject();
+    listname.put("Name", name);
+    JSONArray listArray = new JSONArray();
+    for (int i = 0; i < returnLijstje.size(); i++){
+      listArray.put(returnLijstje.get(i));
+    }
+
+    JSONObject mainObjList = new JSONObject();
+    mainObjList.put("ListName", listname);
+    mainObjList.put("Projects", listArray);
+
+    System.out.println(mainObjList);
+
+
   }
 }
