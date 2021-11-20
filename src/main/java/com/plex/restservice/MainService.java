@@ -44,10 +44,7 @@ public class MainService {
       HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
       challenge = createChallengeFromJson(response.body());
     }
-    catch (IOException e) {
-      e.printStackTrace();
-    }
-    catch (InterruptedException e) {
+    catch (IOException | InterruptedException e) {
       e.printStackTrace();
     }
     return challenge;
@@ -66,10 +63,7 @@ public class MainService {
       HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
       challenges = createChallengeFromJsonArray(response.body());
     }
-    catch (IOException e) {
-      e.printStackTrace();
-    }
-    catch (InterruptedException e) {
+    catch (IOException | InterruptedException e) {
       e.printStackTrace();
     }
     return challenges;
@@ -145,10 +139,11 @@ public class MainService {
 
   public List<Challenge> selectProjectsBasedOnID(JSONObject requestedList) throws JSONException {
 
-    List idList = makeListOfIDs(requestedList);
+    List<Integer> idList = makeListOfIDs(requestedList);
 
     List<Challenge> fullProjectList = getChallenges();
     List<Challenge> selectedProjects = new ArrayList<>();
+
 
     for (int i = 0; i < fullProjectList.size(); i++) {
       if (idList.size() <= i) {
@@ -157,8 +152,9 @@ public class MainService {
       else {
         for (int y = 0; y < idList.size(); y++) {
           Challenge array = fullProjectList.get(i);
-          int id = (int) idList.get(i);
+          int id = idList.get(i);
           if (selectedProjects.contains(array)) {
+          break;
           }
           else {
             selectedProjects.add(array);
@@ -170,13 +166,13 @@ public class MainService {
 
   }
 
-  public List makeListOfIDs(JSONObject inputForListId) throws JSONException {
+  public List<Integer> makeListOfIDs(JSONObject inputForListId) throws JSONException {
 
-    JSONArray projectIds = inputForListId.getJSONArray("ProjectIds");
+    JSONArray projectIds = inputForListId.getJSONArray("projectids");
     List idList = new ArrayList();
     for (int i = 0; i < projectIds.length(); i++) {
       JSONObject jsn = projectIds.getJSONObject(i);
-      idList.add(jsn.getInt("ID"));
+      idList.add(jsn.getInt("id"));
     }
     return idList;
 
@@ -186,15 +182,15 @@ public class MainService {
 
     List<Challenge> projectList = selectProjectsBasedOnID(inputJsonObject);
 
-    String name = (String) inputJsonObject.get("ListName");
+    String name = (String) inputJsonObject.get("listName");
     JSONArray listArray = new JSONArray();
     for (int i = 0; i < projectList.size(); i++) {
       listArray.put(projectList.get(i));
     }
 
     JSONObject mainObjList = new JSONObject();
-    mainObjList.put("ListName", name);
-    mainObjList.put("Projects", listArray);
+    mainObjList.put("listName", name);
+    mainObjList.put("projects", listArray);
 
     return mainObjList;
   }
