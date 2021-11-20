@@ -48,6 +48,10 @@ public class Challenge {
         this.categories = categories;
     }
 
+    public Long getId(int y) {
+        return id;
+    }
+
     @Override
     public String toString() {
         return "Challenge{" +
