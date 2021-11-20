@@ -18,7 +18,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class MainService {
@@ -142,12 +141,11 @@ public class MainService {
         List<Challenge> fullProjectList = getChallenges();
         List<Challenge> selectedProjects = new ArrayList<>();
 
-        for (int i = 0; i < idList.size(); i++) {
-            int idFromIdList = idList.get(i);
-            for (int y = 0; y < fullProjectList.size(); y++) {
-                int idFromFullProjectList = Math.toIntExact(fullProjectList.get(y).id);
+        for (int idFromIdList : idList) {
+            for (Challenge challenge : fullProjectList) {
+                int idFromFullProjectList = Math.toIntExact(challenge.id);
                 if (idFromIdList == idFromFullProjectList) {
-                    selectedProjects.add(fullProjectList.get(y));
+                    selectedProjects.add(challenge);
                 }
             }
         }
@@ -157,7 +155,7 @@ public class MainService {
     public List<Integer> makeListOfIDs(JSONObject inputForListId) throws JSONException {
 
         JSONArray projectIds = inputForListId.getJSONArray("projectids");
-        List idList = new ArrayList();
+        List<Integer> idList = new ArrayList<>();
         for (int i = 0; i < projectIds.length(); i++) {
             JSONObject jsn = projectIds.getJSONObject(i);
             idList.add(jsn.getInt("id"));
@@ -172,8 +170,8 @@ public class MainService {
 
         String name = (String) inputJsonObject.get("listName");
         JSONArray listArray = new JSONArray();
-        for (int i = 0; i < projectList.size(); i++) {
-            listArray.put(projectList.get(i));
+        for (Challenge challenge : projectList) {
+            listArray.put(challenge);
         }
 
         JSONObject mainObjList = new JSONObject();

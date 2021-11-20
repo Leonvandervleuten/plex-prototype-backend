@@ -19,23 +19,23 @@ class RestServiceApplicationTests {
   void testCreateProjectlistForDeelnemer() throws JSONException {
     //Arrange
     JSONObject project1 = new JSONObject();
-    project1.put("ID", 158);
+    project1.put("id", 158);
     JSONObject project2 = new JSONObject();
-    project2.put("ID", 156);
+    project2.put("id", 156);
 
     JSONArray projectArray = new JSONArray();
     projectArray.put(project1);
     projectArray.put(project2);
 
     JSONObject mainObj = new JSONObject();
-    mainObj.put("ProjectIds", projectArray);
-    mainObj.put("ListName", "NaamVanLijst");
+    mainObj.put("projectids", projectArray);
+    mainObj.put("listName", "naamVanLijst");
 
     //Act
     JSONObject returnedProjectList = mainService.createProjectList(mainObj);
 
     //Assert
-    Assertions.assertEquals(mainObj.get("ListName"), returnedProjectList.get("ListName"));
+    Assertions.assertEquals(mainObj.get("listName"), returnedProjectList.get("listName"));
     Assertions.assertEquals(mainObj.length(), returnedProjectList.length());
 
   }
