@@ -1,4 +1,4 @@
-package com.plex.restservice.challenge;
+package com.plex.restservice.domain;
 
 public class LinkedInstitution {
   public int institutionId;

@@ -1,14 +1,14 @@
-package com.plex.restservice.challenge;
+package com.plex.restservice.domain;
 
 import java.util.List;
 
-public class ChallengeList {
+public class ProjectList {
   private long id;
   private final List<Long> challengeIds;
   //TODO Add: End + start date?
   //TODO add: Students
 
-  public ChallengeList(long id, List<Long> challengeIds) {
+  public ProjectList(long id, List<Long> challengeIds) {
     this.id = id;
     this.challengeIds = challengeIds;
   }

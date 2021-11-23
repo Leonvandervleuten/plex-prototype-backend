@@ -1,4 +1,4 @@
-package com.plex.restservice.Dto;
+package com.plex.restservice.dto;
 
 public class ProjectIds {
 

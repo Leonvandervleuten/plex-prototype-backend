@@ -1,11 +1,12 @@
-package com.plex.restservice;
+package com.plex.restservice.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.plex.restservice.challenge.Category;
-import com.plex.restservice.challenge.Challenge;
-import com.plex.restservice.challenge.User;
+import com.plex.restservice.tempdata.TempDataProjectList;
+import com.plex.restservice.domain.Category;
+import com.plex.restservice.domain.Project;
+import com.plex.restservice.domain.User;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,21 +21,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class MainService {
+public class ProjectService {
 
   TempDataProjectList tempDataProjectList = new TempDataProjectList();
 
-  public List<Challenge> getChallengeList(Long id) {
-    List<Challenge> challengeList = new ArrayList<>();
-    List<Long> challengeIds = TempDataClass.tempChallengeList(id).getChallengeIds();
-    for (Long item : challengeIds) {
-      challengeList.add(getChallengeById(item));
-    }
-    return challengeList;
-  }
-
-  public Challenge getChallengeById(long id) {
-    Challenge challenge = null;
+  public Project getChallengeById(long id) {
+    Project project = null;
     String POSTS_API_URL = "https://api.dex.software/api/Project/" + id;
     HttpClient client = HttpClient.newHttpClient();
     HttpRequest request = HttpRequest.newBuilder()
@@ -44,16 +36,16 @@ public class MainService {
         .build();
     try {
       HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-      challenge = createChallengeFromJson(response.body());
+      project = createChallengeFromJson(response.body());
     }
     catch (IOException | InterruptedException e) {
       e.printStackTrace();
     }
-    return challenge;
+    return project;
   }
 
-  public List<Challenge> getChallenges() {
-    List<Challenge> challenges = null;
+  public List<Project> getChallenges() {
+    List<Project> projects = null;
     String POSTS_API_URL = "https://api.dex.software/api/Project";
     HttpClient client = HttpClient.newHttpClient();
     HttpRequest request = HttpRequest.newBuilder()
@@ -63,16 +55,16 @@ public class MainService {
         .build();
     try {
       HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-      challenges = createChallengeFromJsonArray(response.body());
+      projects = createChallengeFromJsonArray(response.body());
     }
     catch (IOException | InterruptedException e) {
       e.printStackTrace();
     }
-    return challenges;
+    return projects;
   }
 
   //Used for DeX API call /project/id <-- get single project | Json Data is different from /project
-  private Challenge createChallengeFromJson(String json) throws JsonProcessingException {
+  private Project createChallengeFromJson(String json) throws JsonProcessingException {
     JsonNode challengeNode = new ObjectMapper().readTree(json);
 
     //basic values
@@ -85,10 +77,10 @@ public class MainService {
     boolean institutePrivate = challengeNode.get("institutePrivate").booleanValue();
 
     //create object without nested
-    Challenge challenge = new Challenge(id, userId, name, description, shortDescription, uri, institutePrivate);
+    Project project = new Project(id, userId, name, description, shortDescription, uri, institutePrivate);
 
     //add nested user
-    challenge.setUser(
+    project.setUser(
         new User(challengeNode.get("user").get("id").asLong(), challengeNode.get("user").get("name").textValue(),
             challengeNode.get("user").get("email").textValue()));
 
@@ -99,15 +91,15 @@ public class MainService {
       for (JsonNode category : categoriesNode) {
         categoriesArray.add(new Category(category.get("id").asLong(), category.get("name").textValue()));
       }
-      challenge.setCategories(categoriesArray);
+      project.setCategories(categoriesArray);
     }
     //TODO Add: collaborators array, linkedInsitutions array, Dates, Project icon object, call to action array, likes array, imamge array
-    return challenge;
+    return project;
   }
 
   //Used for DeX API call /project <-- gets all projects | Json Data is different from /project/id
-  private List<Challenge> createChallengeFromJsonArray(String json) throws JsonProcessingException {
-    List<Challenge> challenges = new ArrayList<>();
+  private List<Project> createChallengeFromJsonArray(String json) throws JsonProcessingException {
+    List<Project> projects = new ArrayList<>();
     JsonNode rootArray = new ObjectMapper().readTree(json).get("results");
 
     //basic values
@@ -117,10 +109,10 @@ public class MainService {
       String shortDescription = root.get("shortDescription").textValue();
 
       //create object without nested
-      Challenge challenge = new Challenge(id, name, shortDescription);
+      Project project = new Project(id, name, shortDescription);
 
       //add nested user
-      challenge.setUser(new User(root.get("user").get("id").asLong(), root.get("user").get("name").textValue(),
+      project.setUser(new User(root.get("user").get("id").asLong(), root.get("user").get("name").textValue(),
           root.get("user").get("email").textValue()));
 
       //add array of categories
@@ -130,26 +122,26 @@ public class MainService {
         for (JsonNode category : categoriesNode) {
           categoriesArray.add(new Category(category.get("id").asLong(), category.get("name").textValue()));
         }
-        challenge.setCategories(categoriesArray);
+        project.setCategories(categoriesArray);
       }
 
       //TODO Add: collaborators array, linkedInsitutions array, Dates, Project icon object, call to action array, likes array, imamge array.
-      challenges.add(challenge);
+      projects.add(project);
     }
-    return challenges;
+    return projects;
   }
 
-  public List<Challenge> selectProjectsBasedOnID(JSONObject requestedList) throws JSONException {
+  public List<Project> selectProjectsBasedOnID(JSONObject requestedList) throws JSONException {
 
     List<Integer> idList = makeListOfIDs(requestedList);
-    List<Challenge> fullProjectList = getChallenges();
-    List<Challenge> selectedProjects = new ArrayList<>();
+    List<Project> fullProjectList = getChallenges();
+    List<Project> selectedProjects = new ArrayList<>();
 
     for (int idFromIdList : idList) {
-      for (Challenge challenge : fullProjectList) {
-        int idFromFullProjectList = Math.toIntExact(challenge.id);
+      for (Project project : fullProjectList) {
+        int idFromFullProjectList = Math.toIntExact(project.id);
         if (idFromIdList == idFromFullProjectList) {
-          selectedProjects.add(challenge);
+          selectedProjects.add(project);
         }
       }
     }
@@ -170,12 +162,12 @@ public class MainService {
 
   public JSONObject createProjectList(JSONObject inputJsonObject) throws JSONException {
 
-    List<Challenge> projectList = selectProjectsBasedOnID(inputJsonObject);
+    List<Project> projectList = selectProjectsBasedOnID(inputJsonObject);
 
     String name = (String) inputJsonObject.get("listName");
     JSONArray listArray = new JSONArray();
-    for (Challenge challenge : projectList) {
-      listArray.put(challenge);
+    for (Project project : projectList) {
+      listArray.put(project);
     }
 
     JSONObject mainObjList = new JSONObject();
@@ -183,10 +175,11 @@ public class MainService {
     mainObjList.put("projects", listArray);
 
     tempDataProjectList.setMockProjectList(name, projectList);
+
     return mainObjList;
   }
 
-  public List<Challenge> projectListForStudent() {
-    return tempDataProjectList.getMockProjectList();
+  public List<Project> projectListForStudent() {
+    return tempDataProjectList.getTempProjectList();
   }
 }

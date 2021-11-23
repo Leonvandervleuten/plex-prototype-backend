@@ -1,4 +1,4 @@
-package com.plex.restservice.challenge;
+package com.plex.restservice.domain;
 
 import java.util.Date;
 

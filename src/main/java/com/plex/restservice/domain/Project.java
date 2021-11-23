@@ -1,9 +1,9 @@
-package com.plex.restservice.challenge;
+package com.plex.restservice.domain;
 
 import java.util.Date;
 import java.util.List;
 
-public class Challenge {
+public class Project {
   public Long id;
   public User user;
   public Long userId;
@@ -23,7 +23,7 @@ public class Challenge {
   public List<Category> categories;
 
   //Used for /project/{id} request
-  public Challenge(Long id, Long userId, String name, String description, String shortDescription, String uri,
+  public Project(Long id, Long userId, String name, String description, String shortDescription, String uri,
       boolean institutePrivate) {
     this.id = id;
     this.userId = userId;
@@ -35,7 +35,7 @@ public class Challenge {
   }
 
   //Used for /project request
-  public Challenge(Long id, String name, String shortDescription) {
+  public Project(Long id, String name, String shortDescription) {
     this.id = id;
     this.name = name;
     this.shortDescription = shortDescription;
@@ -49,13 +49,9 @@ public class Challenge {
     this.categories = categories;
   }
 
-  public Long getId(int y) {
-    return id;
-  }
-
   @Override
   public String toString() {
-    return "Challenge{" +
+    return "Projects{" +
         "id=" + id +
         ", user=" + user +
         ", userId=" + userId +

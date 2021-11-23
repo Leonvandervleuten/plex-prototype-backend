@@ -1,4 +1,4 @@
-package com.plex.restservice.challenge;
+package com.plex.restservice.domain;
 
 public class Collaborator {
   public Long id;
