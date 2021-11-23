@@ -7,18 +7,18 @@ import java.util.List;
 
 class TempDataProjectList {
 
-    public String name = "No list created";
-    public List<Challenge> mockProjectList = Collections.emptyList();
+  public String name = "No list created";
+  public List<Challenge> mockProjectList = Collections.emptyList();
 
-    public TempDataProjectList() {
-    }
+  public TempDataProjectList() {
+  }
 
-    public List<Challenge> getMockProjectList() {
-        return mockProjectList;
-    }
+  public List<Challenge> getMockProjectList() {
+    return mockProjectList;
+  }
 
-    public void setMockProjectList(String name, List<Challenge> mockProjectList) {
-        this.name = name;
-        this.mockProjectList = mockProjectList;
-    }
+  public void setMockProjectList(String name, List<Challenge> mockProjectList) {
+    this.name = name;
+    this.mockProjectList = mockProjectList;
+  }
 }

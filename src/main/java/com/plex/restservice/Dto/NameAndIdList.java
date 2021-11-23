@@ -6,25 +6,24 @@ import java.util.List;
 
 public class NameAndIdList {
 
-    private String listName;
+  private String listName;
 
-    @JsonProperty("projectids")
-    private List<ProjectIds> projectIds;
+  @JsonProperty("projectids")
+  private List<ProjectIds> projectIds;
 
+  public String getListName() {
+    return listName;
+  }
 
-    public String getListName() {
-        return listName;
-    }
+  public void setListName(String listName) {
+    this.listName = listName;
+  }
 
-    public void setListName(String listName) {
-        this.listName = listName;
-    }
+  public List<ProjectIds> getProjectIds() {
+    return projectIds;
+  }
 
-    public List<ProjectIds> getProjectIds() {
-        return projectIds;
-    }
-
-    public void setProjectIds(List<ProjectIds> projectIds) {
-        this.projectIds = projectIds;
-    }
+  public void setProjectIds(List<ProjectIds> projectIds) {
+    this.projectIds = projectIds;
+  }
 }

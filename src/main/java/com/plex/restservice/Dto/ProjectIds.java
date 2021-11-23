@@ -2,13 +2,13 @@ package com.plex.restservice.Dto;
 
 public class ProjectIds {
 
-    private int id;
+  private int id;
 
-    public int getId() {
-        return id;
-    }
+  public int getId() {
+    return id;
+  }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  public void setId(int id) {
+    this.id = id;
+  }
 }

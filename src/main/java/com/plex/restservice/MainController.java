@@ -16,44 +16,43 @@ import java.util.List;
 @RequestMapping(path = "api/v1")
 public class MainController {
 
-    private final MainService mainService;
+  private final MainService mainService;
 
-    @Autowired
-    public MainController(MainService mainService) {
-        this.mainService = mainService;
-    }
+  @Autowired
+  public MainController(MainService mainService) {
+    this.mainService = mainService;
+  }
 
-    @CrossOrigin
-    @GetMapping("/challenges")
-    public List<Challenge> getChallenges() {
-        return mainService.getChallenges();
-    }
+  @CrossOrigin
+  @GetMapping("/challenges")
+  public List<Challenge> getChallenges() {
+    return mainService.getChallenges();
+  }
 
+  @CrossOrigin
+  @GetMapping("/challenges/{id}")
+  public Challenge getChallengesById(@PathVariable("id") String id) {
+    return mainService.getChallengeById(Long.parseLong(id));
+  }
 
-    @CrossOrigin
-    @GetMapping("/challenges/{id}")
-    public Challenge getChallengesById(@PathVariable("id") String id) {
-        return mainService.getChallengeById(Long.parseLong(id));
-    }
+  @CrossOrigin
+  @GetMapping("/challengelist/{id}")
+  public List<Challenge> getChallengeList(@PathVariable("id") String id) {
+    return mainService.getChallengeList(Long.parseLong(id));
+  }
 
-    @CrossOrigin
-    @GetMapping("/challengelist/{id}")
-    public List<Challenge> getChallengeList(@PathVariable("id") String id) {
-        return mainService.getChallengeList(Long.parseLong(id));
-    }
+  @CrossOrigin
+  @PostMapping(value = "/projectlist")
+  public String getData(@RequestBody NameAndIdList nameAndIdList) throws JSONException, JsonProcessingException {
+    ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+    String json = ow.writeValueAsString(nameAndIdList);
+    JSONObject object = new JSONObject(json);
+    return mainService.createProjectList(object).toString();
+  }
 
-    @CrossOrigin
-    @PostMapping(value = "/projectlist")
-    public String getData(@RequestBody NameAndIdList nameAndIdList) throws JSONException, JsonProcessingException {
-        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        String json = ow.writeValueAsString(nameAndIdList);
-        JSONObject object = new JSONObject(json);
-        return mainService.createProjectList(object).toString();
-    }
-
-    @CrossOrigin
-    @GetMapping("/projectlist/student")
-    public List<Challenge> getProjectListForStudent(){
-      return mainService.projectListForStudent();
-    }
+  @CrossOrigin
+  @GetMapping("/projectlist/student")
+  public List<Challenge> getProjectListForStudent() {
+    return mainService.projectListForStudent();
+  }
 }
