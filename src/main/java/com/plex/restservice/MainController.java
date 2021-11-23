@@ -53,7 +53,7 @@ public class MainController {
 
     @CrossOrigin
     @GetMapping("/projectlist/student")
-    public String getProjectListForStudent(){
-      return mainService.projectListForStudent().toString();
+    public List<Challenge> getProjectListForStudent(){
+      return mainService.projectListForStudent();
     }
 }

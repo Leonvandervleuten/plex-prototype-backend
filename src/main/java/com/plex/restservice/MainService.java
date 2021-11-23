@@ -180,11 +180,11 @@ public class MainService {
         mainObjList.put("listName", name);
         mainObjList.put("projects", listArray);
 
-        tempDataProjectList.setMockProjectList(mainObjList);
+        tempDataProjectList.setMockProjectList(name, projectList);
         return mainObjList;
     }
 
-    public JSONObject projectListForStudent() {
+    public List<Challenge> projectListForStudent() {
         return tempDataProjectList.getMockProjectList();
     }
 }

@@ -1,19 +1,24 @@
 package com.plex.restservice;
 
-import org.json.JSONObject;
+import com.plex.restservice.challenge.Challenge;
+
+import java.util.Collections;
+import java.util.List;
 
 class TempDataProjectList {
 
-    public JSONObject mockProjectList;
+    public String name = "No list created";
+    public List<Challenge> mockProjectList = Collections.emptyList();
 
     public TempDataProjectList() {
     }
 
-    public JSONObject getMockProjectList() {
+    public List<Challenge> getMockProjectList() {
         return mockProjectList;
     }
 
-    public void setMockProjectList(JSONObject mockProjectList) {
+    public void setMockProjectList(String name, List<Challenge> mockProjectList) {
+        this.name = name;
         this.mockProjectList = mockProjectList;
     }
 }
