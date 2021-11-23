@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.plex.restservice.Dto.NameAndIdList;
 import com.plex.restservice.challenge.Challenge;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +49,11 @@ public class MainController {
         String json = ow.writeValueAsString(nameAndIdList);
         JSONObject object = new JSONObject(json);
         return mainService.createProjectList(object).toString();
+    }
 
+    @CrossOrigin
+    @GetMapping("/projectlist/student")
+    public String getProjectListForStudent(){
+      return mainService.projectListForStudent().toString();
     }
 }

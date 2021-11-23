@@ -22,6 +22,8 @@ import java.util.List;
 @Service
 public class MainService {
 
+    MockDataProjectList mockDataProjectList = new MockDataProjectList();
+
     public List<Challenge> getChallengeList(Long id) {
         List<Challenge> challengeList = new ArrayList<>();
         List<Long> challengeIds = TempDataClass.tempChallengeList(id).getChallengeIds();
@@ -178,6 +180,11 @@ public class MainService {
         mainObjList.put("listName", name);
         mainObjList.put("projects", listArray);
 
+        mockDataProjectList.setMockProjectList(mainObjList);
         return mainObjList;
+    }
+
+    public JSONObject projectListForStudent() {
+        return mockDataProjectList.getMockProjectList();
     }
 }
