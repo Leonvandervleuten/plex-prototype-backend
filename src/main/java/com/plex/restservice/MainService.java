@@ -22,7 +22,7 @@ import java.util.List;
 @Service
 public class MainService {
 
-    MockDataProjectList mockDataProjectList = new MockDataProjectList();
+    TempDataProjectList tempDataProjectList = new TempDataProjectList();
 
     public List<Challenge> getChallengeList(Long id) {
         List<Challenge> challengeList = new ArrayList<>();
@@ -180,11 +180,11 @@ public class MainService {
         mainObjList.put("listName", name);
         mainObjList.put("projects", listArray);
 
-        mockDataProjectList.setMockProjectList(mainObjList);
+        tempDataProjectList.setMockProjectList(mainObjList);
         return mainObjList;
     }
 
     public JSONObject projectListForStudent() {
-        return mockDataProjectList.getMockProjectList();
+        return tempDataProjectList.getMockProjectList();
     }
 }

@@ -2,11 +2,11 @@ package com.plex.restservice;
 
 import org.json.JSONObject;
 
-class MockDataProjectList {
+class TempDataProjectList {
 
     public JSONObject mockProjectList;
 
-    public MockDataProjectList() {
+    public TempDataProjectList() {
     }
 
     public JSONObject getMockProjectList() {
