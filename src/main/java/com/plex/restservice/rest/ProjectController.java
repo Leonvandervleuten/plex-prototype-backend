@@ -1,13 +1,9 @@
 package com.plex.restservice.rest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
+import com.plex.restservice.domain.Challenge;
 import com.plex.restservice.service.ProjectService;
-import com.plex.restservice.dto.NameAndIdList;
-import com.plex.restservice.domain.Project;
+import com.plex.restservice.dto.NewChallengeListDTO;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,29 +21,28 @@ public class ProjectController {
   }
 
   @CrossOrigin
-  @GetMapping("/projects")
-  public List<Project> getChallenges() {
+  @GetMapping("/challenges")
+  public List<Challenge> getChallenges() {
     return projectService.getChallenges();
   }
 
   @CrossOrigin
   @GetMapping("/projects/{id}")
-  public Project getChallengesById(@PathVariable("id") String id) {
+  public Challenge getChallengesById(@PathVariable("id") String id) {
     return projectService.getChallengeById(Long.parseLong(id));
   }
 
   @CrossOrigin
   @PostMapping(value = "/projectlist")
-  public String getData(@RequestBody NameAndIdList nameAndIdList) throws JSONException, JsonProcessingException {
-    ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-    String json = ow.writeValueAsString(nameAndIdList);
-    JSONObject object = new JSONObject(json);
-    return projectService.createProjectList(object).toString();
+  public String getData(@RequestBody NewChallengeListDTO newProject) throws JSONException {
+    projectService.createChallengeList(newProject);
+    // TODO Response 200
+    return "OK";
   }
 
   @CrossOrigin
   @GetMapping("/projectlist/student")
-  public List<Project> getProjectListForStudent() {
-    return projectService.projectListForStudent();
+  public List<Challenge> getProjectListForStudent() {
+    return projectService.challengeListForStudent();
   }
 }

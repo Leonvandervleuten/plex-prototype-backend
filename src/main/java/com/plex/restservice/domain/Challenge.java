@@ -3,7 +3,7 @@ package com.plex.restservice.domain;
 import java.util.Date;
 import java.util.List;
 
-public class Project {
+public class Challenge {
   public Long id;
   public User user;
   public Long userId;
@@ -23,7 +23,7 @@ public class Project {
   public List<Category> categories;
 
   //Used for /project/{id} request
-  public Project(Long id, Long userId, String name, String description, String shortDescription, String uri,
+  public Challenge(Long id, Long userId, String name, String description, String shortDescription, String uri,
       boolean institutePrivate) {
     this.id = id;
     this.userId = userId;
@@ -35,7 +35,7 @@ public class Project {
   }
 
   //Used for /project request
-  public Project(Long id, String name, String shortDescription) {
+  public Challenge(Long id, String name, String shortDescription) {
     this.id = id;
     this.name = name;
     this.shortDescription = shortDescription;

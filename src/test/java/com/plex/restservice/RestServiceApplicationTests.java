@@ -1,12 +1,14 @@
 package com.plex.restservice;
 
+import com.plex.restservice.domain.Challenge;
+import com.plex.restservice.dto.NewChallengeListDTO;
 import com.plex.restservice.service.ProjectService;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootTest
 class RestServiceApplicationTests {
@@ -14,28 +16,22 @@ class RestServiceApplicationTests {
   ProjectService projectService = new ProjectService();
 
   @Test
-  void testCreateProjectlistForDeelnemer() throws JSONException {
+  void testCreateProjectlistForDeelnemer() {
     //Arrange
-    JSONObject project1 = new JSONObject();
-    project1.put("id", 158);
-    JSONObject project2 = new JSONObject();
-    project2.put("id", 156);
-
-    JSONArray projectArray = new JSONArray();
-    projectArray.put(project1);
-    projectArray.put(project2);
-
-    JSONObject mainObj = new JSONObject();
-    mainObj.put("projectids", projectArray);
-    mainObj.put("listName", "naamVanLijst");
+    List<Long> idList = new ArrayList<>(2);
+    idList.add(158L);
+    idList.add(156L);
 
     //Act
-    JSONObject returnedProjectList = projectService.createProjectList(mainObj);
+    NewChallengeListDTO challengeList = new NewChallengeListDTO();
+    challengeList.setName("projectList");
+    challengeList.setChallengeIds(idList);
+    projectService.createChallengeList(challengeList);
+    List<Challenge> result = projectService.challengeListForStudent();
+
 
     //Assert
-    Assertions.assertEquals(mainObj.get("listName"), returnedProjectList.get("listName"));
-    Assertions.assertEquals(mainObj.length(), returnedProjectList.length());
-
+    Assertions.assertEquals(idList.size(), result.size());
   }
 
 }
