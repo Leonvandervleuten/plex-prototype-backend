@@ -13,12 +13,17 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Category {
+public class Project {
 
   @Id
   private Long id;
-  private String name;
+  private String title;
+  private String shortDescription;
+  private String uploader;
 
   @ManyToMany
-  private Set<Project> projects;
+  private Set<Category> categories;
+
+  @ManyToMany
+  private Set<ProjectList> projectLists;
 }

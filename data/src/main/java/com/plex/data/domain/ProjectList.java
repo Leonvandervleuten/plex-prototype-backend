@@ -13,7 +13,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Category {
+public class ProjectList {
 
   @Id
   private Long id;
@@ -21,4 +21,6 @@ public class Category {
 
   @ManyToMany
   private Set<Project> projects;
+  //TODO Add: End + start date?
+  //TODO add: Students
 }
