@@ -6,7 +6,7 @@ services:
       restart: always
       build:
         context: .
-        dockerfile: data\Dockerfile
+        dockerfile: data/Dockerfile
       environment:
         MYSQL_ROOT_PASSWORD: 'password'
       ports:
