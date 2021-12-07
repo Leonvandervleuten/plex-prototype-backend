@@ -1,8 +1,8 @@
 package com.plex.plexapi.service;
 
-import com.plex.data.domain.Challenge;
+import com.plex.data.domain.Project;
 import com.plex.data.repository.ChallengeListRepository;
-import com.plex.data.repository.ChallengeRepository;
+import com.plex.data.repository.ProjectRepository;
 import com.plex.dexapi.service.ProjectService;
 import com.plex.plexapi.domain.NewChallengeList;
 import org.junit.jupiter.api.Assertions;
@@ -15,11 +15,11 @@ import java.util.List;
 
 @SpringBootTest(classes = {
     ChallengeService.class,
-    ChallengeRepository.class,
+    ProjectRepository.class,
     ChallengeListRepository.class,
     ProjectService.class
 })
-class ChallengeServiceTest {
+class ProjectServiceTest {
 
   @Autowired
   private ChallengeService challengeService;
@@ -36,7 +36,7 @@ class ChallengeServiceTest {
     challengeList.setName("projectList");
     challengeList.setChallengeIds(idList);
     challengeService.createChallengeList(challengeList);
-    List<Challenge> result = challengeService.challengeListForStudent();
+    List<Project> result = challengeService.challengeListForStudent();
 
     //Assert
     Assertions.assertEquals(idList.size(), result.size());
