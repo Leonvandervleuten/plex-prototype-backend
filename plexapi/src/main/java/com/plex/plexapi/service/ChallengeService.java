@@ -1,72 +1,79 @@
 package com.plex.plexapi.service;
 
-import com.plex.data.domain.Project;
-import com.plex.data.domain.ProjectList;
+import com.plex.data.domain.Challenge;
+import com.plex.data.domain.ChallengeList;
 import com.plex.data.repository.ChallengeListRepository;
-import com.plex.data.repository.ProjectRepository;
+import com.plex.data.repository.ChallengeRepository;
 import com.plex.dexapi.service.ProjectService;
 import com.plex.plexapi.domain.NewChallengeList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class ChallengeService {
 
-  private final ProjectRepository projectRepository;
+  private final ChallengeRepository challengeRepository;
   private final ChallengeListRepository challengeListRepository;
   private final ProjectService projectService;
 
   @Autowired
   public ChallengeService(
-      ProjectRepository projectRepository,
+      ChallengeRepository challengeRepository,
       ChallengeListRepository challengeListRepository,
       ProjectService projectService
   ) {
-    this.projectRepository = projectRepository;
+    this.challengeRepository = challengeRepository;
     this.challengeListRepository = challengeListRepository;
     this.projectService = projectService;
   }
 
-  public List<Project> getChallenges() {
+  public List<Challenge> getChallenges() {
     if (updateProjectsFromDex()) {
-      projectRepository.saveAll(projectService.getChallenges());
+      challengeRepository.setChallenges(projectService.getChallenges());
     }
-    return projectRepository.findAll();
+    return challengeRepository.getChallenges();
   }
 
   private boolean updateProjectsFromDex() {
-    return projectRepository.findAll().isEmpty();
+    return challengeRepository.getChallenges().isEmpty();
   }
 
-  public Project getChallengeById(Long id) {
-    return projectRepository.findById(id).orElse(null);
+  public Challenge getChallengeById(Long id) {
+    return challengeRepository.getChallenge(id);
   }
 
-  public Set<Project> selectProjectsBasedOnID(List<Long> challengeIds) {
+  public List<Challenge> selectProjectsBasedOnID(List<Long> challengeIds) {
     return getChallenges()
         .stream()
         .filter(challenge -> challengeIds.contains(challenge.getId()))
-        .collect(Collectors.toSet());
+        .collect(Collectors.toList());
+
+//    List<Integer> idList = makeListOfIDs(requestedList);
+//    List<Project> fullProjectList = getChallenges();
+//    List<Project> selectedProjects = new ArrayList<>();
+//
+//    for (int idFromIdList : idList) {
+//      for (Project project : fullProjectList) {
+//        int idFromFullProjectList = Math.toIntExact(project.id);
+//        if (idFromIdList == idFromFullProjectList) {
+//          selectedProjects.add(project);
+//        }
+//      }
+//    }
+//    return selectedProjects;
   }
 
   public void createChallengeList(NewChallengeList newChallengeList) {
-    Set<Project> projects = selectProjectsBasedOnID(newChallengeList.getChallengeIds());
-    ProjectList projectList = new ProjectList();
-    projectList.setName(newChallengeList.getName());
-    projectList.setProjects(projects);
-    challengeListRepository.save(projectList);
+    List<Challenge> challenges = selectProjectsBasedOnID(newChallengeList.getChallengeIds());
+    challengeListRepository.addChallengeList(newChallengeList.getName(), challenges);
   }
 
-  public List<Project> challengeListForStudent() {
-    return challengeListRepository.findAll().stream()
-        .max(Comparator.comparing(ProjectList::getId))
-        .map(ProjectList::getProjects).orElse(Collections.emptySet())
-        .stream().toList();
+  public List<Challenge> challengeListForStudent() {
+    ChallengeList challengeList = challengeListRepository.getMostRecentChallengeList();
+    return challengeList != null ? challengeList.getChallenges() : Collections.emptyList();
   }
 }

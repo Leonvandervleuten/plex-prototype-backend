@@ -1,13 +1,12 @@
 package com.plex.plexapi.rest;
 
-import com.plex.data.domain.Project;
+import com.plex.data.domain.Challenge;
 import com.plex.plexapi.domain.NewChallengeList;
 import com.plex.plexapi.service.ChallengeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping(path = "api/v1")
@@ -22,13 +21,13 @@ public class ProjectController {
 
   @CrossOrigin
   @GetMapping("/challenges")
-  public List<Project> getChallenges() {
+  public List<Challenge> getChallenges() {
     return challengeService.getChallenges();
   }
 
   @CrossOrigin
   @GetMapping("/projects/{id}")
-  public Project getChallengesById(@PathVariable("id") String id) {
+  public Challenge getChallengesById(@PathVariable("id") String id) {
     return challengeService.getChallengeById(Long.parseLong(id));
   }
 
@@ -42,7 +41,7 @@ public class ProjectController {
 
   @CrossOrigin
   @GetMapping("/projectlist/student")
-  public List<Project> getChallengeListForStudent() {
+  public List<Challenge> getChallengeListForStudent() {
     return challengeService.challengeListForStudent();
   }
 }
