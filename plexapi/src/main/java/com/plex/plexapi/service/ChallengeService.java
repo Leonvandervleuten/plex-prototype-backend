@@ -4,7 +4,7 @@ import com.plex.data.domain.Project;
 import com.plex.data.domain.ProjectList;
 import com.plex.data.repository.ChallengeListRepository;
 import com.plex.data.repository.ProjectRepository;
-import com.plex.dexapi.service.ProjectService;
+import com.plex.dexapi.service.ProjectServiceMock;
 import com.plex.plexapi.domain.NewChallengeList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,13 +20,13 @@ public class ChallengeService {
 
   private final ProjectRepository projectRepository;
   private final ChallengeListRepository challengeListRepository;
-  private final ProjectService projectService;
+  private final ProjectServiceMock projectService;
 
   @Autowired
   public ChallengeService(
       ProjectRepository projectRepository,
       ChallengeListRepository challengeListRepository,
-      ProjectService projectService
+      ProjectServiceMock projectService
   ) {
     this.projectRepository = projectRepository;
     this.challengeListRepository = challengeListRepository;

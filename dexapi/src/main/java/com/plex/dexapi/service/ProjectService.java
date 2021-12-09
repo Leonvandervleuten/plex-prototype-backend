@@ -14,7 +14,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ProjectService {
@@ -84,14 +86,14 @@ public class ProjectService {
     //add array of categories
     JsonNode categoriesNode = challengeNode.get("categories");
     if (categoriesNode.isArray()) {
-      List<Category> categoriesArray = new ArrayList<>();
+      Set<Category> categoriesArray = new HashSet<>();
       for (JsonNode categoryJson : categoriesNode) {
         Category category = new Category();
         category.setId(categoryJson.get("id").asLong());
         category.setName(categoryJson.get("name").textValue());
         categoriesArray.add(category);
       }
-//      project.setCategories(categoriesArray);
+      project.setCategories(categoriesArray);
     }
     //TODO Add: collaborators array, linkedInsitutions array, Dates, Project icon object, call to action array, likes array, imamge array
     return project;
@@ -122,14 +124,14 @@ public class ProjectService {
       //add array of categories
       JsonNode categoriesNode = root.get("categories");
       if (categoriesNode.isArray()) {
-        List<Category> categoriesArray = new ArrayList<>();
+        Set<Category> categoriesArray = new HashSet<>();
         for (JsonNode categoryJson : categoriesNode) {
           Category category = new Category();
           category.setId(categoryJson.get("id").asLong());
           category.setName(categoryJson.get("name").textValue());
           categoriesArray.add(category);
         }
-//        project.setCategories(categoriesArray);
+        project.setCategories(categoriesArray);
       }
 
       //TODO Add: collaborators array, linkedInsitutions array, Dates, Project icon object, call to action array, likes array, imamge array.

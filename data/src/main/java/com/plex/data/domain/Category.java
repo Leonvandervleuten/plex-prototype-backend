@@ -19,6 +19,6 @@ public class Category {
   private Long id;
   private String name;
 
-  @ManyToMany
+  @ManyToMany(mappedBy = "categories")
   private Set<Project> projects;
 }

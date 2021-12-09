@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -21,7 +22,7 @@ public class Project {
   private String shortDescription;
   private String uploader;
 
-  @ManyToMany
+  @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
   private Set<Category> categories;
 
   @ManyToMany
