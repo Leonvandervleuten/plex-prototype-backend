@@ -1,5 +1,7 @@
-package com.plex.data.domain;
+package com.plex.plex.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,6 +27,7 @@ public class Project {
   @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
   private Set<Category> categories;
 
-  @ManyToMany
+  @ManyToMany(mappedBy = "projects")
+  @JsonIgnore
   private Set<ProjectList> projectLists;
 }

@@ -1,10 +1,12 @@
-package com.plex.data.domain;
+package com.plex.plex.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import java.util.Set;
@@ -13,12 +15,16 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Category {
+public class ProjectList {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
   private String name;
 
-  @ManyToMany(mappedBy = "categories")
+  @ManyToMany
   private Set<Project> projects;
+  //TODO Add: End + start date?
+  //TODO add: Students
 }

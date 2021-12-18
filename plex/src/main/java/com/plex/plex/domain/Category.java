@@ -1,5 +1,6 @@
-package com.plex.data.domain;
+package com.plex.plex.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,14 +14,13 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ProjectList {
+public class Category {
 
   @Id
   private Long id;
   private String name;
 
-  @ManyToMany
+  @ManyToMany(mappedBy = "categories")
+  @JsonIgnore
   private Set<Project> projects;
-  //TODO Add: End + start date?
-  //TODO add: Students
 }

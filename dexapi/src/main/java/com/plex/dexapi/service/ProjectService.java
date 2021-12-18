@@ -3,9 +3,11 @@ package com.plex.dexapi.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.plex.data.domain.Category;
-import com.plex.data.domain.Project;
 import com.plex.dexapi.domain.User;
+import com.plex.plex.domain.Category;
+import com.plex.plex.domain.Project;
+import com.plex.plex.service.ExternalProjectService;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -19,9 +21,9 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class ProjectService {
+public class DexProjectService implements ExternalProjectService {
 
-  public Project getChallengeById(long id) {
+  public Project getProjectById(long id) {
     Project project = null;
     String POSTS_API_URL = "https://api.dex.software/api/Project/" + id;
     HttpClient client = HttpClient.newHttpClient();
@@ -40,7 +42,7 @@ public class ProjectService {
     return project;
   }
 
-  public List<Project> getChallenges() {
+  public List<Project> getProjects() {
     List<Project> projects = null;
     String POSTS_API_URL = "https://api.dex.software/api/Project";
     HttpClient client = HttpClient.newHttpClient();
