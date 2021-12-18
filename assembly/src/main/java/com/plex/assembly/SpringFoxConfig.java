@@ -1,4 +1,4 @@
-package com.plex.plex;
+package com.plex.assembly;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -20,8 +20,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Service
-public class DexProjectService implements ExternalProjectService {
+@Service("DexProjectService")
+public class ProjectService implements ExternalProjectService {
 
   public Project getProjectById(long id) {
     Project project = null;
