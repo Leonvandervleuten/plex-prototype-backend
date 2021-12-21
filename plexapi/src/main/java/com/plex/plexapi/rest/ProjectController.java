@@ -1,8 +1,8 @@
 package com.plex.plexapi.rest;
 
-import com.plex.data.domain.Challenge;
-import com.plex.plexapi.domain.NewChallengeList;
-import com.plex.plexapi.service.ChallengeService;
+import com.plex.plex.domain.Project;
+import com.plex.plex.domain.ProjectList;
+import com.plex.plex.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,36 +12,36 @@ import java.util.List;
 @RequestMapping(path = "api/v1")
 public class ProjectController {
 
-  private final ChallengeService challengeService;
+  private final ProjectService projectService;
 
   @Autowired
-  public ProjectController(ChallengeService challengeService) {
-    this.challengeService = challengeService;
+  public ProjectController(ProjectService projectService) {
+    this.projectService = projectService;
   }
 
   @CrossOrigin
-  @GetMapping("/challenges")
-  public List<Challenge> getChallenges() {
-    return challengeService.getChallenges();
+  @GetMapping("/projects")
+  public List<Project> getChallenges() {
+    return projectService.getChallenges();
   }
 
   @CrossOrigin
   @GetMapping("/projects/{id}")
-  public Challenge getChallengesById(@PathVariable("id") String id) {
-    return challengeService.getChallengeById(Long.parseLong(id));
+  public Project getChallengesById(@PathVariable("id") String id) {
+    return projectService.getChallengeById(Long.parseLong(id));
   }
 
   @CrossOrigin
   @PostMapping(value = "/projectlist")
-  public String getData(@RequestBody NewChallengeList newChallengeList) {
-    challengeService.createChallengeList(newChallengeList);
+  public String getData(@RequestBody ProjectList newChallengeList) {
+    projectService.createChallengeList(newChallengeList);
     // TODO Response 200
     return "OK";
   }
 
   @CrossOrigin
   @GetMapping("/projectlist/student")
-  public List<Challenge> getChallengeListForStudent() {
-    return challengeService.challengeListForStudent();
+  public List<Project> getChallengeListForStudent() {
+    return projectService.challengeListForStudent();
   }
 }

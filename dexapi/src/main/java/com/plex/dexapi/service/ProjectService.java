@@ -3,9 +3,11 @@ package com.plex.dexapi.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.plex.data.domain.Category;
-import com.plex.data.domain.Challenge;
 import com.plex.dexapi.domain.User;
+import com.plex.plex.domain.Category;
+import com.plex.plex.domain.Project;
+import com.plex.plex.service.ExternalProjectService;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -14,13 +16,15 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-@Service
-public class ProjectService {
+@Service("DexProjectService")
+public class ProjectService implements ExternalProjectService {
 
-  public Challenge getChallengeById(long id) {
-    Challenge challenge = null;
+  public Project getProjectById(long id) {
+    Project project = null;
     String POSTS_API_URL = "https://api.dex.software/api/Project/" + id;
     HttpClient client = HttpClient.newHttpClient();
     HttpRequest request = HttpRequest.newBuilder()
@@ -30,16 +34,16 @@ public class ProjectService {
         .build();
     try {
       HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-      challenge = createChallengeFromJson(response.body());
+      project = createChallengeFromJson(response.body());
     }
     catch (IOException | InterruptedException e) {
       e.printStackTrace();
     }
-    return challenge;
+    return project;
   }
 
-  public List<Challenge> getChallenges() {
-    List<Challenge> challenges = null;
+  public List<Project> getProjects() {
+    List<Project> projects = null;
     String POSTS_API_URL = "https://api.dex.software/api/Project";
     HttpClient client = HttpClient.newHttpClient();
     HttpRequest request = HttpRequest.newBuilder()
@@ -49,16 +53,16 @@ public class ProjectService {
         .build();
     try {
       HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-      challenges = createChallengeFromJsonArray(response.body());
+      projects = createChallengeFromJsonArray(response.body());
     }
     catch (IOException | InterruptedException e) {
       e.printStackTrace();
     }
-    return challenges;
+    return projects;
   }
 
   //Used for DeX API call /project/id <-- get single project | Json Data is different from /project
-  private Challenge createChallengeFromJson(String json) throws JsonProcessingException {
+  private Project createChallengeFromJson(String json) throws JsonProcessingException {
     JsonNode challengeNode = new ObjectMapper().readTree(json);
 
     //basic values
@@ -71,35 +75,35 @@ public class ProjectService {
     boolean institutePrivate = challengeNode.get("institutePrivate").booleanValue();
 
     //create object without nested
-    Challenge challenge = new Challenge();
-    challenge.setId(id);
-    challenge.setTitle(name);
-    challenge.setShortDescription(shortDescription);
+    Project project = new Project();
+    project.setId(id);
+    project.setTitle(name);
+    project.setShortDescription(shortDescription);
 
     //add nested user
     User user = new User(challengeNode.get("user").get("id").asLong(), challengeNode.get("user").get("name").textValue(),
             challengeNode.get("user").get("email").textValue());
-    challenge.setUploader(user.getName());
+    project.setUploader(user.getName());
 
     //add array of categories
     JsonNode categoriesNode = challengeNode.get("categories");
     if (categoriesNode.isArray()) {
-      List<Category> categoriesArray = new ArrayList<>();
+      Set<Category> categoriesArray = new HashSet<>();
       for (JsonNode categoryJson : categoriesNode) {
         Category category = new Category();
         category.setId(categoryJson.get("id").asLong());
         category.setName(categoryJson.get("name").textValue());
         categoriesArray.add(category);
       }
-      challenge.setCategories(categoriesArray);
+      project.setCategories(categoriesArray);
     }
     //TODO Add: collaborators array, linkedInsitutions array, Dates, Project icon object, call to action array, likes array, imamge array
-    return challenge;
+    return project;
   }
 
   //Used for DeX API call /project <-- gets all projects | Json Data is different from /project/id
-  private List<Challenge> createChallengeFromJsonArray(String json) throws JsonProcessingException {
-    List<Challenge> challenges = new ArrayList<>();
+  private List<Project> createChallengeFromJsonArray(String json) throws JsonProcessingException {
+    List<Project> projects = new ArrayList<>();
     JsonNode rootArray = new ObjectMapper().readTree(json).get("results");
 
     //basic values
@@ -109,32 +113,32 @@ public class ProjectService {
       String shortDescription = root.get("shortDescription").textValue();
 
       //create object without nested
-      Challenge challenge = new Challenge();
-      challenge.setId(id);
-      challenge.setTitle(name);
-      challenge.setShortDescription(shortDescription);
+      Project project = new Project();
+      project.setId(id);
+      project.setTitle(name);
+      project.setShortDescription(shortDescription);
 
       //add nested user
       User user = new User(root.get("user").get("id").asLong(), root.get("user").get("name").textValue(),
           root.get("user").get("email").textValue());
-      challenge.setUploader(user.getName());
+      project.setUploader(user.getName());
 
       //add array of categories
       JsonNode categoriesNode = root.get("categories");
       if (categoriesNode.isArray()) {
-        List<Category> categoriesArray = new ArrayList<>();
+        Set<Category> categoriesArray = new HashSet<>();
         for (JsonNode categoryJson : categoriesNode) {
           Category category = new Category();
           category.setId(categoryJson.get("id").asLong());
           category.setName(categoryJson.get("name").textValue());
           categoriesArray.add(category);
         }
-        challenge.setCategories(categoriesArray);
+        project.setCategories(categoriesArray);
       }
 
       //TODO Add: collaborators array, linkedInsitutions array, Dates, Project icon object, call to action array, likes array, imamge array.
-      challenges.add(challenge);
+      projects.add(project);
     }
-    return challenges;
+    return projects;
   }
 }
