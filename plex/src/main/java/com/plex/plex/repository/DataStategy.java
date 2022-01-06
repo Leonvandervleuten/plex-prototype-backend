@@ -1,16 +1,16 @@
 package com.plex.plex.repository;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
-public interface DataStategy<T, ID> {
+public interface DataStategy<T extends Identifiable<ID>, ID extends Serializable> {
 
   List<T> findAll();
-  List<T> findAllById(Iterable<ID> ids);
 
   <S extends T> List<S> saveAll(Iterable<S> entities);
 
   Optional<T> findById(ID id);
 
-  <S extends T> S save(S entity);
+  T save(T entity);
 }
