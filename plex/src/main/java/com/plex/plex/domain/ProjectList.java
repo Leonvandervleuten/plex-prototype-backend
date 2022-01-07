@@ -1,5 +1,6 @@
 package com.plex.plex.domain;
 
+import com.plex.plex.repository.Identifiable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ProjectList {
+public class ProjectList implements Identifiable<Long> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
