@@ -1,9 +1,7 @@
-package com.plex.plexapi.service;
+package com.plex.plex.service;
 
 import com.plex.plex.domain.Project;
 import com.plex.plex.domain.ProjectList;
-import com.plex.plex.service.ProjectService;
-import com.plex.plexapi.DefaultRegistryConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

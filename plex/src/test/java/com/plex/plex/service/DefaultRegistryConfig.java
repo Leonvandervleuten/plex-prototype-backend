@@ -1,4 +1,4 @@
-package com.plex.plexapi;
+package com.plex.plex.service;
 
 import com.plex.plex.repository.DefaultProjectDataStrategy;
 import com.plex.plex.repository.DefaultProjectListDataStrategy;
