@@ -2,13 +2,13 @@ package com.plex.plexapi.service;
 
 import com.plex.plex.domain.Project;
 import com.plex.plex.domain.ProjectList;
-import com.plex.plex.repository.ProjectDataStategy;
-import com.plex.plex.repository.ProjectListDataStretegy;
 import com.plex.plex.service.ProjectService;
+import com.plex.plexapi.DefaultRegistryConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,14 +16,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @SpringBootTest(classes = {
-    ProjectService.class,
-    ProjectDataStategy.class,
-    ProjectListDataStretegy.class
+    ProjectService.class
 })
+@Import(DefaultRegistryConfig.class)
 class ProjectServiceTest {
 
   @Autowired
-  private ProjectService challengeService;
+  private ProjectService projectService;
 
   @Test
   void testCreateProjectlistForDeelnemer() {
@@ -41,11 +40,10 @@ class ProjectServiceTest {
     projectList.setProjects(projects);
 
     //Act
-    challengeService.createChallengeList(projectList);
-    List<Project> result = challengeService.challengeListForStudent();
+    projectService.createChallengeList(projectList);
+    List<Project> result = projectService.challengeListForStudent();
 
     //Assert
     Assertions.assertEquals(idList.size(), result.size());
   }
-
 }
